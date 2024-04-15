@@ -1,45 +1,11 @@
 import React, {Component} from "react";
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, Navigate } from 'react-router-dom';
 import { useState } from "react";
 
 function Body() {
     
     return(
         <div className="metaportal_fn_main">
-            <header id="header">
-                <div className="header">
-                    <div className="header_in">
-                        <div className="trigger_logo">
-                            <div className="trigger">
-                                <span></span>
-                            </div>
-                            <div className="logo">   
-                            </div>
-                        </div>
-                        <div className="nav">
-                            <ul>
-                                <li><a className="creative_link" href="index.html">Home</a> {/* eslint-disable-line jsx-a11y/anchor-is-valid */}</li>
-                                
-                                <li><a className="creative_link" href="index.html#about">About</a>{/* eslint-disable-line jsx-a11y/anchor-is-valid */}</li>
-                                <li><a className="creative_link" href="index.html#ourteam">Our Team</a>{/* eslint-disable-line jsx-a11y/anchor-is-valid */}</li>
-
-                            </ul>
-                        </div>
-                        <div className="social-media2">
-                            <ul>
-                                <Link to="https://opensea.io/" target="_blank" rel="noreferrer"><img src="img/market/opensea.png" alt="" /></Link>{/* eslint-disable-line jsx-a11y/anchor-is-valid */}
-                                <a href="https://discord.com/" target="_blank" rel="noreferrer"><img src="img/market/discord.png" alt="" /></a>{/* eslint-disable-line jsx-a11y/anchor-is-valid */}
-                                <a href="https://discord.com/" target="_blank" rel="noreferrer"><img src="img/market/twitter.png" alt="" /></a>{/* eslint-disable-line jsx-a11y/anchor-is-valid */}
-                                <a href="https://discord.com/" target="_blank" rel="noreferrer"><img src="img/market/instagram.png" alt="" /></a>{/* eslint-disable-line jsx-a11y/anchor-is-valid */}
-                            </ul>
-                        </div>
-                        <div className="wallet">
-                            <a href="#" className="metaportal_fn_button wallet_opener" id="connectWallet"><span>Connect Metamask!</span></a>{/* eslint-disable-line jsx-a11y/anchor-is-valid */}
-                        </div>
-
-                    </div>
-                </div>
-            </header>
             <div className="metaportal_fn_content">
                 <section id="home">
                     <div className="container">
