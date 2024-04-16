@@ -1,9 +1,12 @@
-import React, {Component} from "react";
+import React, {useEffect} from "react";
 import { NavLink, Link, Navigate } from 'react-router-dom';
 import { useState } from "react";
+import {preprocess} from './utils'
 
-function Body() {
-    
+function Home() {
+    useEffect(() => {
+        preprocess();
+    }, [])
     return(
         <div className="metaportal_fn_main">
             <div className="metaportal_fn_content">
@@ -323,121 +326,9 @@ function Body() {
                         </div>
                     </div>
                 </section>
-                <div className="fn_cs_section_divider">
-                    <div className="divider">
-                        <span className="short"></span>
-                        <span className="long"></span>
-                        <span className="short"></span>
-                    </div>
-                </div>
-                <section id="ourteam">
-                    <div className="container">
-                        <h3 className="fn__maintitle big" data-text="Our Team" data-align="center">Our Team</h3>
-                        <div className="metaportal_fn_drops">
-                            <ul className="grid">
-                                <li>
-                                    <div className="nft__item">
-                                        <div className="img_holder">
-                                            <img src="img/drops/1.png" alt=""/>
-                                        </div>
-                                        <div className="title_holder">
-                                            <h3 className="fn_title"><a href="#">TheiriN</a>{/* eslint-disable-line jsx-a11y/anchor-is-valid */}</h3>
-                                            <p align="center">Founder</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className="nft__item">
-                                        <div className="img_holder">
-                                            <img src="img/drops/2.png" alt=""/>
-                                        </div>
-                                        <div className="title_holder">
-                                            <h3 className="fn_title"><a href="#">Shelter</a>{/* eslint-disable-line jsx-a11y/anchor-is-valid */}</h3>
-                                            <p align="center">Co-Founder</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className="nft__item">
-                                        <div className="img_holder">
-                                            <img src="img/drops/3.png" alt=""/>
-                                        </div>
-                                        <div className="title_holder">
-                                            <h3 className="fn_title"><a href="#">Lucigeotto</a>{/* eslint-disable-line jsx-a11y/anchor-is-valid */}</h3>
-                                            <p align="center">Artist</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className="nft__item">
-                                        <div className="img_holder">
-                                            <img src="img/drops/4.png" alt=""/>
-                                        </div>
-                                        <div className="title_holder">
-                                            <h3 className="fn_title"><a href="#">Lucky Catch</a>{/* eslint-disable-line jsx-a11y/anchor-is-valid */}</h3>
-                                            <p align="center">Artist</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className="nft__item">
-                                        <div className="img_holder">
-                                            <img src="img/drops/5.png" alt=""/>
-                                        </div>
-                                        <div className="title_holder">
-                                            <h3 className="fn_title"><a href="#">Shooterfanas</a>{/* eslint-disable-line jsx-a11y/anchor-is-valid */}</h3>
-                                            <p align="center">Developer</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className="nft__item">
-                                        <div className="img_holder">
-                                            <img src="img/drops/6.png" alt=""/>
-                                        </div>
-                                        <div className="title_holder">
-                                            <h3 className="fn_title"><a href="#">Skyluci</a>{/* eslint-disable-line jsx-a11y/anchor-is-valid */}</h3>
-                                            <p align="center">Marketing Manager</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className="nft__item">
-                                        <div className="img_holder">
-                                            <img src="img/drops/7.png" alt=""/>
-                                        </div>
-                                        <div className="title_holder">
-                                            <h3 className="fn_title"><a href="#">Zeo</a>{/* eslint-disable-line jsx-a11y/anchor-is-valid */}</h3>
-                                            <p align="center">Marketing Manager</p>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className="nft__item">
-                                        <div className="img_holder">
-                                            <img src="img/drops/8.png" alt=""/>
-                                        </div>
-                                        <div className="title_holder">
-                                            <h3 className="fn_title"><a href="#">Meone</a>{/* eslint-disable-line jsx-a11y/anchor-is-valid */}</h3>
-                                            <p align="center">Community Operations Manager</p>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-
-                    </div>
-                </section>
-                <div className="fn_cs_section_divider">
-                    <div className="divider">
-                        <span className="short"></span>
-                        <span className="long"></span>
-                        <span className="short"></span>
-                    </div>
-                </div>
             </div>
         </div>
     )
     }
 
-export default Body;
+export default Home;

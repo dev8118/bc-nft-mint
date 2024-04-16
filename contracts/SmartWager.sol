@@ -28,6 +28,24 @@ contract SmartWager is ERC721Enumerable, Ownable {
         cardPrice[4] = price * 1; // bronze
     }
 
+    function setPrice(uint prc) public onlyOwner {
+        price = prc;
+        // update cards price
+        cardPrice[0] = price * 2; // for random card generation
+        cardPrice[1] = price * 5; // diamond
+        cardPrice[2] = price * 3; // gold
+        cardPrice[3] = price * 2; // silver
+        cardPrice[4] = price * 1; // bronze
+    }
+
+    function getRemain() public view returns (uint) {
+        return supplyLimit - totalSupply();
+    }
+
+    function getPrice() public view returns (uint) {
+        return price;
+    }
+
     function setCardLimitPerAccout(uint count) public onlyOwner{
         require(count < supplyLimit, "Unvalid count number");
         cardLimitPerAccount = count;

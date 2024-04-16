@@ -15,9 +15,9 @@ module.exports = {
     local: {
       url: "http://localhost:8545",
     },
-    sepolia: {
-        url: API_URL,
-        accounts: [`0x${PRIVATE_KEY}`]
-     }
+    // sepolia: {
+    //     url: API_URL,
+    //     accounts: [`0x${PRIVATE_KEY}`]
+    //  }
   },
 };

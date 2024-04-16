@@ -1,55 +1,64 @@
-import React, {Component} from 'react';
+import React, {Component, useEffect, useState } from 'react';
 import { NavLink, Link, Navigate } from 'react-router-dom';
 
+import downSvg from './assets/svg/down.svg';
+import openseaSvg from './assets/svg/opensea.svg';
+
+import images from "./data/images";
+import { preprocess } from './utils';
+
+// import useNftContrct from './web3/useNFTContract';
+
 const Mint = () => {
+    const [cardType, setCardType] = useState(0);
+    const [items, setItems] = useState([]);
+
+    // const [contract, price, remain, result, mintNFT] = useNftContrct(cardType);
+
+    const goNext = () => {
+        setCardType((cardType + 1) % 5);
+    }
+
+    const goPrev = () => {
+        setCardType((5 + cardType - 1) % 5);
+    }
+    
+    useEffect(() => {
+        preprocess();
+    }, []);
+
     return(
         <>
         <div className="metaportal_fn_main">
-            {/* <div className="metaportal_fn_mobnav">
-                <div className="mob_top">
-                    <div className="social_trigger">
-                        <div className="trigger">
-                            <span></span>
-                        </div>
-                        <div className="social">
-                            <ul>
-                                <li><a href="https://www.facebook.com/" target="_blank">Fb.</a></li>
-                                <li><a href="https://www.twitter.com/" target="_blank">Tw.</a></li>
-                                <li><a href="https://www.instagram.com/" target="_blank">In.</a></li>
-                                <li><a href="https://www.linkedin.com/" target="_blank">Ln.</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div className="wallet" id="addr_resp">
-                        <a href="#" className="metaportal_fn_button wallet_opener"><span>Wallet</span></a>
-                    </div>
-                </div>
-                <div className="mob_mid">
-                    <div className="logo">
-                        <a href="index.html"><img src="img/logo.png" alt="" /></a>
-                    </div>
-                    <div className="trigger">
-                        <span></span>
-                    </div>
-                </div>
-                <div className="mob_bot">
-                    <ul>
-                        <li><a className="creative_link" href="index.html#home">Home</a></li>
-                        <li><a className="creative_link" href="index.html#about">About</a></li>
-                        <li><a className="creative_link" href="index.html#collection">Collection</a></li>
-                    </ul>
-                </div>
-            </div> */}
             <div className="metaportal_fn_content">
-
                 <div className="metaportal_fn_mintpage">
-
                     <div className="container small">
                         <div className="metaportal_fn_mint_top">
                             <div className="mint_left">
-                                <div className="img">
-                                    <div className="img_in" data-bg-img="img/about/11.png">
-                                        <img src="img/1x1.jpg" alt="" />
+                                <div className="mint_fn_cs_slider">
+                                    {
+                                        images.map((image, index) => {
+                                            return (
+                                                <div key={index} className="img" style={{display: index === cardType ? 'block' : 'none'}}>
+                                                    <div className="img_in" style={{backgroundImage:'url('+image.imgURL+')'}}>
+                                                        <img src={image.imgURL} alt="" />
+                                                    </div>
+                                                </div>
+                                            )
+                                        })
+                                    }
+
+                                    <div className="mint_slider_nav">
+                                        <span onClick={goPrev} className="prev" style={{cursor: 'pointer'}}>
+                                            <span className="circle"></span>
+                                            <span className="icon"><img src={downSvg} alt="" className="fn__svg" /></span>
+                                            <span className="circle"></span>
+                                        </span>
+                                        <span onClick={goNext} className="next">
+                                            <span className="circle"></span>
+                                            <span className="icon"><img src={downSvg} alt="" className="fn__svg" /></span>
+                                            <span className="circle"></span>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -58,6 +67,7 @@ const Mint = () => {
                                 <h3 className="fn__maintitle" data-text="Biki Wodoo Club" data-align="left">Biki Wodoo Club</h3>
                                 <div className="desc">
                                     <p>Suspendisse eu velit est. Cras nec vestibulum quam. Donec tincidunt purus nec enim tincidunt, sit amet facilisis massa laoreet. Integer mollis nec sapien eu lacinia. Nunc eu massa dictum, vulputate neque ac, porta mauris. Sed sollicitudin nisi augue, a gravida turpis elementum vel. Curabitur sagittis quis diam et rhoncus. Nam pellentesque imperdiet aliquet. Sed non ante malesuada, ultrices sem at, tempus libero.</p>
+                                    <p>{images[cardType].imgAlt}</p>
                                     <p>Duis eu lorem ut mauris pulvinar auctor. Maecenas et dapibus orci, eleifend euismod justo. Quisque luctus turpis eu tristique feugiat. Praesent ac magna feugiat, interdum lacus ac, interdum dui. Pellentesque id quam quis enim malesuada rutrum. Orci varius natoque penatibus et magnis dis parturient.</p>
                                 </div>
                                 <div className="view_on">
@@ -66,7 +76,7 @@ const Mint = () => {
                                             <span>View On:</span>
                                         </li>
                                         <li>
-                                            <a href="#"><img src="svg/opensea.svg" alt="" className="fn__svg" /></a>
+                                            <Link to=""><img src={openseaSvg} alt="" className="fn__svg" /></Link>
                                         </li>
 
                                     </ul>
@@ -75,7 +85,7 @@ const Mint = () => {
                         </div>
                         <div className="metaportal_fn_mintbox">
                             <div className="mint_left">
-                                <div className="mint_title"><span>Public Mint is Live</span></div>
+                                <div className="mint_title"><span>Public Mint is Live</span><span>{images[cardType].imgAlt}</span></div>
                                 <div className="mint_list">
                                     <ul>
                                         <li>
@@ -150,59 +160,6 @@ const Mint = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="metaportal_fn_nft_cats">
-                            <ul>
-                                <li>
-                                    <div className="item">
-                                        <h4 className="parent_category">Clothing</h4>
-                                        <h3 className="child_category" title="Black Yukata">Black Yukata</h3>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className="item">
-                                        <h4 className="parent_category">Eyes</h4>
-                                        <h3 className="child_category" title="Daydreaming">Daydreaming</h3>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className="item">
-                                        <h4 className="parent_category">Special</h4>
-                                        <h3 className="child_category" title="Fireflies, Smoke">Fireflies, Smoke</h3>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className="item">
-                                        <h4 className="parent_category">Type</h4>
-                                        <h3 className="child_category" title="Human, Sand">Human, Sand</h3>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className="item">
-                                        <h4 className="parent_category">Mouth</h4>
-                                        <h3 className="child_category" title="Not Bad">Not Bad</h3>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className="item">
-                                        <h4 className="parent_category">Neck</h4>
-                                        <h3 className="child_category" title="Zen Headphones">Zen Headphones</h3>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className="item">
-                                        <h4 className="parent_category">Eyes</h4>
-                                        <h3 className="child_category" title="Striking">Striking</h3>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className="item">
-                                        <h4 className="parent_category">Neck</h4>
-                                        <h3 className="child_category" title="Zen Headphones">Zen Headphones</h3>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-
                     </div>
 
 
@@ -211,7 +168,7 @@ const Mint = () => {
             <a href="#" className="metaportal_fn_totop">
                 <span className="totop_inner">
                     <span className="icon">
-                        <img src="svg/down.svg" alt="" className="fn__svg" />
+                        <img src={downSvg} alt="" className="fn__svg replaced-svg" />
                     </span>
                     <span className="text">Scroll To Top</span>
                 </span>

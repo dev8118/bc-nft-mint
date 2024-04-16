@@ -33,7 +33,7 @@ var MetaPortalFilterArray		= [];
 			FrenifyMetaPortal.contactForm();
 			FrenifyMetaPortal.totopScroll();
 			FrenifyMetaPortal.seachSomething();
-			FrenifyMetaPortal.walletAndLeftNavOpener();
+			// FrenifyMetaPortal.walletAndLeftNavOpener();
 			FrenifyMetaPortal.resizeWalletAndLeftNav();
 			// FrenifyMetaPortal.headerAnchor();
 			FrenifyMetaPortal.isotope();
@@ -42,7 +42,7 @@ var MetaPortalFilterArray		= [];
 			FrenifyMetaPortal.hold();
 			FrenifyMetaPortal.filterItems();
 			FrenifyMetaPortal.applyFilter();
-            // FrenifyMetaPortal.navSubMenu();
+            FrenifyMetaPortal.navSubMenu();
             FrenifyMetaPortal.roadmapSwiper();
         },
 
@@ -134,22 +134,22 @@ var MetaPortalFilterArray		= [];
 			
 		},
 		
-		// navSubMenu: function(){
-		// 	$('.metaportal_fn_leftnav .nav_holder a').off().on('click',function(){
-		// 		var e = $(this);
-		// 		var s = e.siblings('.sub-menu');
-		// 		var svg = $('.metaportal_fn_leftnav .nav_holder .icon').html();
-		// 		if(s.length){
-		// 			FrenifyCounter++;
-		// 			if(!s.find('>li>.prev').length){
-		// 				s.prepend('<li><a href="#" class="prev"><span class="creative_link">'+svg+e.text()+'</span></a></li>');
-		// 			}
-		// 			$('.metaportal_fn_leftnav .nav_holder > ul').css({transform: 'translateX(-'+(100*FrenifyCounter)+'%)'});
-		// 			FrenifyMetaPortal.previousItems();
-		// 			return false;
-		// 		}
-		// 	});
-		// },
+		navSubMenu: function(){
+			$('.metaportal_fn_leftnav .nav_holder a').off().on('click',function(){
+				var e = $(this);
+				var s = e.siblings('.sub-menu');
+				var svg = $('.metaportal_fn_leftnav .nav_holder .icon').html();
+				if(s.length){
+					FrenifyCounter++;
+					if(!s.find('>li>.prev').length){
+						s.prepend('<li><a href="#" class="prev"><span class="creative_link">'+svg+e.text()+'</span></a></li>');
+					}
+					$('.metaportal_fn_leftnav .nav_holder > ul').css({transform: 'translateX(-'+(100*FrenifyCounter)+'%)'});
+					FrenifyMetaPortal.previousItems();
+					return false;
+				}
+			});
+		},
 		
 		previousItems: function(){
 			$('.metaportal_fn_leftnav .nav_holder .prev').off().on('click',function(){

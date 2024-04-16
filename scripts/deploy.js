@@ -1,7 +1,7 @@
 const hre = require('hardhat')
 
 async function main() {
-    const NFT = await hre.ethers.getContractFactory('NFT')
+    const NFT = await hre.ethers.getContractFactory('SmartWager')
     const nft = await NFT.deploy()
     await nft.deployed()
     console.log('NFT contract deployed to:', nft.address)
