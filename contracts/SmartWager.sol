@@ -1,21 +1,21 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-import "../node_modules/@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
-import "../node_modules/@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract SmartWager is ERC721Enumerable, Ownable {
     uint private _tokenIdCounter = 0;
     uint private cardLimitPerAccount = 5;
     uint private supplyLimit = 1000;
 
-    uint private price = 0.1 ether;
+    uint private price = 2 * 10**17;
 
     mapping(uint => uint) private cardRarity;
     mapping(uint => uint) private cardPrice;
     mapping(uint => uint) private cardEndAt;
 
-    constructor() ERC721("Smart Wager", "SW") {
+    constructor() ERC721("Smart Wager", "SW") Ownable(msg.sender) {
         cardRarity[1] = 1;
         cardRarity[2] = 10;
         cardRarity[3] = 489;
@@ -26,6 +26,11 @@ contract SmartWager is ERC721Enumerable, Ownable {
         cardPrice[2] = price * 3; // gold
         cardPrice[3] = price * 2; // silver
         cardPrice[4] = price * 1; // bronze
+    }
+
+    function exists(uint256 tokenId) internal view returns (bool) {
+        address owner = ownerOf(tokenId);
+        return owner != address(0);
     }
 
     function setPrice(uint prc) public onlyOwner {
@@ -64,75 +69,80 @@ contract SmartWager is ERC721Enumerable, Ownable {
     }
 
     function getCardExpiration(uint tokenId) public view returns (uint) {
-        require(_exists(tokenId), "Token does not exist");
-        return cardEndTimeAt[tokenId];
+        require(exists(tokenId), "Token does not exist");
+        return cardEndAt[tokenId];
     }
 
     function setCardExpiration(uint tokenId, uint endTime) public onlyOwner{
-        require(_exists(tokenId), "Token does not exist");
-        cardEndAt[newTokenId] = cardEndTime;
+        require(exists(tokenId), "Token does not exist");
+        cardEndAt[tokenId] = endTime;
     }
 
-    function mintCard(uint cardType, uint cardEndTime) public {
+    function mintCard(uint cardType) public {
         require(_tokenIdCounter < supplyLimit, "Maximum cards minted");
-        require(balanceOf(msg.sender) >= cardLimitperAccount, "Maximun cards minted for the account");
+        require(balanceOf(msg.sender) <= cardLimitPerAccount, "Maximun cards minted for the account");
 
         _tokenIdCounter += 1;
         uint newTokenId = _tokenIdCounter;
         _safeMint(msg.sender, newTokenId);
         cardRarity[newTokenId] = cardType;
-        cardEndAt[newTokenId] = cardEndTime;
+        // cardEndAt[newTokenId] = cardEndTime;
     }
 
-    function mintSpecificCard(uint cardType) public payable {
-        uint cardEndTime;
-        if (cardType == 1) {
-            cardEndTime = block.timestamp + 120 days;
-        } else if (cardType == 2) {
-            cardEndTime = block.timestamp + 60 days;
-        } else if(cardType == 3) {
-            cardEndTime = block.timestamp + 25 days;
-        } else if(cardType == 4) {
-            cardEndTime = block.timestamp + 10 days;
-        } else {
-            revert("Invalid card type");
+    function mintSpecificCard(uint cardType, uint quantity) public payable {
+        // uint cardEndTime;
+        // if (cardType == 1) {
+        //     cardEndTime = block.timestamp + 120 days;
+        // } else if (cardType == 2) {
+        //     cardEndTime = block.timestamp + 60 days;
+        // } else if(cardType == 3) {
+        //     cardEndTime = block.timestamp + 25 days;
+        // } else if(cardType == 4) {
+        //     cardEndTime = block.timestamp + 10 days;
+        // } else {
+        //     revert("Invalid card type");
+        // }
+
+        require(quantity + balanceOf(msg.sender) <= cardLimitPerAccount, "Over maximun limit for an account");
+        require(msg.value >= cardPrice[cardType] * quantity, "Not sufficient ether for specific NFT minting");
+        for(uint8 i = 0; i < quantity; i++) {
+            mintCard(cardType);
         }
-
-        require(msg.value >= cardPrice[cardType], "Not sufficient ether for specific NFT minting");
-        mintCard(cardType, cardEndTime);
     }
 
-    function mintRandomCard() public payable {
-        require(msg.value >= cardPrice[0], "Not sufficient ether for random NFT minting");
-
-        uint randomNumber = uint(keccak256(abi.encodePacked(block.timestamp, msg.sender, newTokenId))) % 1000;
-        // Determine card type based on rarity
+    function mintRandomCard(uint quantity) public payable {
+        require(quantity + balanceOf(msg.sender) <= cardLimitPerAccount, "Over maximun limit for an account");
+        require(msg.value >= cardPrice[0] * quantity, "Not sufficient ether for random NFT minting");
+        
         uint cardType;
-        uint cardEndTime;
-        if (randomNumber == 1) {
-            cardType = 1; // 'Diamond' (1%)
-            cardEndTime = block.timestamp + 120 days;
-        } else if (randomNumber <= 10) {
-            cardType = 2; // 'Gold' (10%)
-            cardEndTime = block.timestamp + 60 days;
-        } else if(randomNumber <= 489) {
-            cardType = 3; // 'Silver' (48.9%)
-            cardEndTime = block.timestamp + 25 days;
-        } else {
-            cardType = 4; // 'Bronze' (50%)
-            cardEndTime = block.timestamp + 10 days;
+        for(uint8 i = 0; i < quantity; i++) {
+            uint randomNumber = uint(keccak256(abi.encodePacked(block.timestamp, msg.sender, i))) % 1000;
+            // Determine card type based on rarity
+            // uint cardEndTime;
+            if (randomNumber == 1) {
+                cardType = 1; // 'Diamond' (1%)
+                // cardEndTime = block.timestamp + 120 days;
+            } else if (randomNumber <= 10) {
+                cardType = 2; // 'Gold' (10%)
+                // cardEndTime = block.timestamp + 60 days;
+            } else if(randomNumber <= 489) {
+                cardType = 3; // 'Silver' (48.9%)
+                // cardEndTime = block.timestamp + 25 days;
+            } else {
+                cardType = 4; // 'Bronze' (50%)
+                // cardEndTime = block.timestamp + 10 days;
+            }
+            mintCard(cardType);
         }
-
-        mintCard(cardType, cardEndTime);
     }
 
     function burnCard(uint tokenId) public {
-        require(_isApprovedOrOwner(msg.sender, tokenId), "Caller is not owner nor approved");
+        require(ownerOf(tokenId) == msg.sender || getApproved(tokenId) == msg.sender || msg.sender == owner(), "Caller is not owner nor approved");
         _burn(tokenId);
     }
 
     function getCardType(uint tokenId) public view returns (string memory) {
-        require(_exists(tokenId), "Token does not exist");
+        require(exists(tokenId), "Token does not exist");
 
         uint rarityIndex = cardRarity[tokenId];
         if (rarityIndex == 1) {

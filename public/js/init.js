@@ -22,8 +22,8 @@ var MetaPortalFilterArray		= [];
 		init: function(){
 			FrenifyMetaPortal.ready();
 			FrenifyMetaPortal.menuCenter();
-			FrenifyMetaPortal.imgToSVG();
-			FrenifyMetaPortal.BgImg();
+			// FrenifyMetaPortal.imgToSVG();
+			// FrenifyMetaPortal.BgImg();
 			FrenifyMetaPortal.totopFixer();
 			FrenifyMetaPortal.slider();
 			FrenifyMetaPortal.headerFixer();
@@ -37,7 +37,7 @@ var MetaPortalFilterArray		= [];
 			FrenifyMetaPortal.resizeWalletAndLeftNav();
 			// FrenifyMetaPortal.headerAnchor();
 			FrenifyMetaPortal.isotope();
-			FrenifyMetaPortal.qnt();
+			// FrenifyMetaPortal.qnt();
 			FrenifyMetaPortal.countdown();
 			FrenifyMetaPortal.hold();
 			FrenifyMetaPortal.filterItems();
@@ -445,29 +445,29 @@ var MetaPortalFilterArray		= [];
 			});
 		},
 		
-		qnt: function(){
-			$('.qnt .decrease').off().on('click',function(){
-				var e = $(this),
-					s = e.closest('.qnt').find('.summ');
-				var sVal = parseInt(s.text());
-				if(sVal >= 2){sVal--;}
-				s.text(sVal);
-				var price = sVal * s.data('price');
-				s.closest('.mint_list').find('.total_price').html(price);
-				return false;
-			});
-			$('.qnt .increase').off().on('click',function(){
-				var e = $(this),
-					s = e.closest('.qnt').find('.summ');
-				var sVal = parseInt(s.text());
-				if( sVal < 5 )
-					sVal++;
-				s.text(sVal);
-				var price = sVal * s.data('price');
-				s.closest('.mint_list').find('.total_price').html(price);
-				return false;
-			});
-		},
+		// qnt: function(){
+		// 	$('.qnt .decrease').off().on('click',function(){
+		// 		var e = $(this),
+		// 			s = e.closest('.qnt').find('.summ');
+		// 		var sVal = parseInt(s.text());
+		// 		if(sVal >= 2){sVal--;}
+		// 		s.text(sVal);
+		// 		var price = sVal * s.data('price');
+		// 		s.closest('.mint_list').find('.total_price').html(price);
+		// 		return false;
+		// 	});
+		// 	$('.qnt .increase').off().on('click',function(){
+		// 		var e = $(this),
+		// 			s = e.closest('.qnt').find('.summ');
+		// 		var sVal = parseInt(s.text());
+		// 		if( sVal < 5 )
+		// 			sVal++;
+		// 		s.text(sVal);
+		// 		var price = sVal * s.data('price');
+		// 		s.closest('.mint_list').find('.total_price').html(price);
+		// 		return false;
+		// 	});
+		// },
 		isotope: function(){
 			$('.fn-isotope').isotope({
 				itemSelector: '.isotope-item',

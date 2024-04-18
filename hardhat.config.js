@@ -10,14 +10,17 @@ const accounts = {
 
 module.exports = {
   solidity: "0.8.20",
-  defaultNetwork: "local",
   networks: {
-    local: {
-      url: "http://localhost:8545",
+    hardhat: {
+      forking: {
+        url: "https://mainnet.infura.io/v3/dd7731197e7f4a379df05e7bb2da9485"
+      }
     },
-    // sepolia: {
-    //     url: API_URL,
-    //     accounts: [`0x${PRIVATE_KEY}`]
-    //  }
+  },
+  paths: {
+    sources: "./contracts",
+    tests: "./test",
+    cache: "./cache",
+    artifacts: "./src/artifacts"
   },
 };
