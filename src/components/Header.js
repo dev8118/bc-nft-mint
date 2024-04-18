@@ -20,8 +20,6 @@ const Header = ({ handleWalletOpen, handleLeftNavOpen }) => {
     }
 
     const {
-        library,
-        chainId,
         account,
         activate,
         deactivate,
@@ -49,6 +47,7 @@ const Header = ({ handleWalletOpen, handleLeftNavOpen }) => {
         const provider = window.localStorage.getItem("provider");
         if (provider) activate(connectors[provider]);
     }, []);
+
     return (
         <>
         <header id="header">
@@ -78,7 +77,7 @@ const Header = ({ handleWalletOpen, handleLeftNavOpen }) => {
                         </ul>
                     </div> */}
                     <div className="wallet" style={{cursor: 'pointer'}}>
-                        <span className="metaportal_fn_button wallet_opener" onClick={handleWalletBtn}>
+                        <span className="metaportal_fn_button wallet_opener" onClick={handleWalletBtn} id="connect_wallet"> 
                             <span>{!active ? 'Connect Wallet' : `Disconnect ${truncateAddress(account)}`}</span>
                         </span>
                     </div>

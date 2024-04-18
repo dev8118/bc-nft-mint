@@ -27,6 +27,15 @@ export const truncateAddress = (address) => {
         img.replaceWith(svg);
 
       }, 'xml');
+      var div = $('*[data-bg-img]');
+			div.each(function(){
+				var element = $(this);
+				var attrBg	= element.attr('data-bg-img');
+				var dataBg	= element.data('bg-img');
+				if(typeof(attrBg) !== 'undefined'){
+					element.css({backgroundImage:'url('+dataBg+')'});
+				}
+			});
 
     });
   }

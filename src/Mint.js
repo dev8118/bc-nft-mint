@@ -1,19 +1,28 @@
 import React, {Component, useEffect, useState } from 'react';
-import { NavLink, Link, Navigate } from 'react-router-dom';
-
+import { Link } from 'react-router-dom';
+import { useWeb3React } from "@web3-react/core";
 import downSvg from './assets/svg/down.svg';
 import openseaSvg from './assets/svg/opensea.svg';
 
 import images from "./data/images";
 import { preprocess } from './utils';
 
-// import useNftContrct from './web3/useNFTContract';
+import useNftContract from './web3/useNFTContract';
 
 const Mint = () => {
-    const [cardType, setCardType] = useState(0);
-    const [items, setItems] = useState([]);
 
-    // const [contract, price, remain, result, mintNFT] = useNftContrct(cardType);
+    const {
+        account,
+        active, 
+        chainId
+    } = useWeb3React();
+
+    const [items, setItems] = useState([]);
+    const [quantity, setQuantity] = useState(1);
+    const [totalPrice, setTotalPrice] = useState(0);
+    const [available, setAvailable] = useState(false);
+
+    const {cardType, setCardType, price, remain, limitPerAccount, mintNFT, result, balance} = useNftContract();
 
     const goNext = () => {
         setCardType((cardType + 1) % 5);
@@ -23,9 +32,49 @@ const Mint = () => {
         setCardType((5 + cardType - 1) % 5);
     }
     
+    const mint = async () => {
+        if(available) {
+            await mintNFT(cardType, quantity);
+        }
+    }
+
+    const validateQuantity = (quantity) => {
+        let res = quantity;
+        if(quantity < 1) res = 1;
+        if(res +  balance > limitPerAccount) res = limitPerAccount - balance;
+        setTotalPrice(price * res);
+        return res;
+    }
+
+    const connectWallet = () => {
+        const walletButton = document.querySelector('#connect_wallet');
+        if(walletButton) walletButton.click();
+    }
+
     useEffect(() => {
         preprocess();
     }, []);
+
+    useEffect(() => {
+        if(result != null) {
+            console.log(result)
+        }
+    }, [result])
+
+    useEffect(() => {
+        if(quantity < 1 || remain < 1 || !active) {
+            setAvailable(false);
+        }else {
+            setAvailable(true);
+        }
+    }, [quantity, remain])
+
+    useEffect(() => {
+        console.log(price, remain, limitPerAccount, balance)
+        setQuantity(validateQuantity(1));
+        setTotalPrice(price * validateQuantity(1));
+    }, [price, remain, balance, limitPerAccount])
+
 
     return(
         <>
@@ -91,38 +140,48 @@ const Mint = () => {
                                         <li>
                                             <div className="item">
                                                 <h4>Price</h4>
-                                                <h3>0.02 ETH</h3>
+                                                <h3>{price} ETH</h3>
                                             </div>
                                         </li>
                                         <li>
                                             <div className="item">
                                                 <h4>Remaining</h4>
-                                                <h3><span id="totalSupply">9999</span>/<span id="maxSupply">9999</span></h3>
+                                                <h3><span id="totalSupply">{1000 - remain}</span>/<span id="maxSupply">1000</span></h3>
                                             </div>
                                         </li>
                                         <li>
                                             <div className="item">
                                                 <h4>Quantity</h4>
                                                 <div className="qnt">
-                                                    <span className="decrease">-</span>
-                                                    <span className="summ" data-price="0.02" id="mint_amount">1</span>
-                                                    <span className="increase">+</span>
+                                                    <span className="decrease" onClick={ () => setQuantity( validateQuantity(quantity - 1))}>-</span>
+                                                    <span className="summ" data-price="0.02" id="mint_amount">{quantity}</span>
+                                                    <span className="increase" onClick={ () => setQuantity( validateQuantity(quantity + 1))}>+</span>
                                                 </div>
                                             </div>
                                         </li>
                                         <li>
                                             <div className="item">
                                                 <h4>Total Price</h4>
-                                                <h3><span className="total_price" id="total_price">0.02</span> ETH + GAS</h3>
+                                                <h3><span className="total_price" id="total_price">{totalPrice}</span> ETH + GAS</h3>
                                             </div>
                                         </li>
                                     </ul>
                                 </div>
                                 <div className="mint_desc" id="mintNow">
-                                    <span  className="metaportal_fn_button" style={{cursor:'pointer'}}>
-                                        <span >Mint Now</span>
-                                    </span>
-                                    <p>By clicking “MINT NOW” button, you agree to our <a href="#">Terms of Service</a> and our <a href="#">Privacy Policy</a>.</p>
+                                    {
+                                        active ? (
+                                        <>
+                                        <span  className="metaportal_fn_button" style={{cursor:'pointer'}}>
+                                            <span onClick={mint}>{balance > 5 ? 'Limit maximum mint' : 'Mint Now'}</span>
+                                        </span>
+                                        <p>Available: {5 - balance}</p>
+                                        <p>By clicking “MINT NOW” button, you agree to our <a href="#">Terms of Service</a> and our <a href="#">Privacy Policy</a>.</p>
+                                        </>) :
+                                        (<span  className="metaportal_fn_button" style={{cursor:'pointer'}}>
+                                            <span onClick={connectWallet}>Connect Wallet</span>
+                                        </span>)
+                                    }
+                                    
                                 </div>
                             </div>
                             <div className="mint_right">

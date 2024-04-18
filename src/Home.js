@@ -6,7 +6,7 @@ import {preprocess} from './utils'
 function Home() {
     useEffect(() => {
         preprocess();
-    }, [])
+    })
     return(
         <div className="metaportal_fn_main">
             <div className="metaportal_fn_content">
@@ -69,7 +69,7 @@ function Home() {
                                         <div className="item">
                                             <img src="img/1x1.jpg" alt=""/>
                                             <div className="item_in">
-                                                <div className="img" data-bg-img="img/slider/7.jpg"></div>
+                                                <div className="img" data-bg-img="img/slider/my_7.jpg"></div>
                                             </div>
                                         </div>
                                     </li>
