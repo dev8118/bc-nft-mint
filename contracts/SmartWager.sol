@@ -86,23 +86,9 @@ contract SmartWager is ERC721Enumerable, Ownable {
         uint newTokenId = _tokenIdCounter;
         _safeMint(msg.sender, newTokenId);
         cardRarity[newTokenId] = cardType;
-        // cardEndAt[newTokenId] = cardEndTime;
     }
 
     function mintSpecificCard(uint cardType, uint quantity) public payable {
-        // uint cardEndTime;
-        // if (cardType == 1) {
-        //     cardEndTime = block.timestamp + 120 days;
-        // } else if (cardType == 2) {
-        //     cardEndTime = block.timestamp + 60 days;
-        // } else if(cardType == 3) {
-        //     cardEndTime = block.timestamp + 25 days;
-        // } else if(cardType == 4) {
-        //     cardEndTime = block.timestamp + 10 days;
-        // } else {
-        //     revert("Invalid card type");
-        // }
-
         require(quantity + balanceOf(msg.sender) <= cardLimitPerAccount, "Over maximun limit for an account");
         require(msg.value >= cardPrice[cardType] * quantity, "Not sufficient ether for specific NFT minting");
         for(uint8 i = 0; i < quantity; i++) {
@@ -117,20 +103,14 @@ contract SmartWager is ERC721Enumerable, Ownable {
         uint cardType;
         for(uint8 i = 0; i < quantity; i++) {
             uint randomNumber = uint(keccak256(abi.encodePacked(block.timestamp, msg.sender, i))) % 1000;
-            // Determine card type based on rarity
-            // uint cardEndTime;
             if (randomNumber == 1) {
                 cardType = 1; // 'Diamond' (1%)
-                // cardEndTime = block.timestamp + 120 days;
             } else if (randomNumber <= 10) {
                 cardType = 2; // 'Gold' (10%)
-                // cardEndTime = block.timestamp + 60 days;
             } else if(randomNumber <= 489) {
                 cardType = 3; // 'Silver' (48.9%)
-                // cardEndTime = block.timestamp + 25 days;
             } else {
                 cardType = 4; // 'Bronze' (50%)
-                // cardEndTime = block.timestamp + 10 days;
             }
             mintCard(cardType);
         }
